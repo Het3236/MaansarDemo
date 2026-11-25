@@ -9,8 +9,11 @@ dist-preview/
 # the processed output is committed under each version's public/media
 media-src/
 
-# original client assets (raw photos and reels, several GB)
-Assets/
+# original client assets (raw photos and reels, several GB).
+# Anchored to the repo root on purpose: git matches ignore patterns
+# case-insensitively on Windows, so a bare "Assets/" also swallows every
+# built docs/v*/assets/ folder.
+/Assets/
 *.pdf
 
 # v2 is not part of this preview
