@@ -1,0 +1,118 @@
+// Builds everything under public/media/scenes from the studio's own footage.
+//
+//   npm run media
+//
+// For each scene in src/scenes.js:
+//   <id>.mp4      desktop scrub encode  — 1080x1920, crf 20, GOP 8, no audio
+//   <id>-m.mp4    phone scrub encode    — 720x1280,  crf 23, GOP 4 (cheaper seeks)
+//   <id>.webp     first frame, the poster and reduced-motion still
+//   <id>-m.webp   the same at phone size
+// and into media-src/frames, the seam frames a generated connector must start and
+// end on (scene i's LAST frame, scene i+1's FIRST frame — never a fresh render).
+//
+// Any connector clip dropped at media-src/connectors/conn-<i>.mp4 is encoded the
+// same way to public/media/scenes/conn-<i>(.mp4|-m.mp4). src/media.json records what
+// exists, and the page only wires connectors that are listed there.
+//
+// Re-runs skip outputs that are newer than their inputs; pass --force to rebuild.
+
+import { spawnSync } from 'node:child_process'
+import { existsSync, mkdirSync, statSync, writeFileSync } from 'node:fs'
+import { dirname, join, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
+import ffmpeg from 'ffmpeg-static'
+import { SCENES, CONNECTOR_PROMPTS } from '../src/scenes.js'
+
+const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..')
+const ASSETS = resolve(ROOT, '../Assets/Maansar Studio')
+const OUT = join(ROOT, 'public/media/scenes')
+const FRAMES = join(ROOT, 'media-src/frames')
+const CONN_SRC = join(ROOT, 'media-src/connectors')
+const FORCE = process.argv.includes('--force')
+const FPS = 30 // the reels are 60 fps; 30 halves the file and scrubs identically
+
+for (const d of [OUT, FRAMES, CONN_SRC]) mkdirSync(d, { recursive: true })
+
+function run(args) {
+  const r = spawnSync(ffmpeg, ['-nostdin', '-hide_banner', '-v', 'error', '-y', ...args], { stdio: 'inherit' })
+  if (r.status !== 0) throw new Error('ffmpeg failed: ' + args.join(' '))
+}
+
+const stale = (out, src) => FORCE || !existsSync(out) || statSync(out).mtimeMs < statSync(src).mtimeMs
+
+// Portrait sources throughout, so the only scaling is to the target width.
+function encode(input, out, { width, crf, gop, trim }) {
+  run([
+    ...(trim ? ['-ss', String(trim.from), '-to', String(trim.to)] : []),
+    '-i', input,
+    '-an',
+    '-vf', `fps=${FPS},scale=${width}:-2:flags=lanczos,unsharp=5:5:0.5:5:5:0.0,format=yuv420p`,
+    '-c:v', 'libx264', '-preset', 'slow', '-crf', String(crf),
+    '-g', String(gop), '-keyint_min', String(gop), '-sc_threshold', '0',
+    '-movflags', '+faststart',
+    out,
+  ])
+}
+
+function frame(input, out, { at, last = false, width }) {
+  run([
+    ...(last ? ['-sseof', '-0.1'] : ['-ss', String(at)]),
+    '-i', input,
+    '-frames:v', '1',
+    ...(width ? ['-vf', `scale=${width}:-2:flags=lanczos`] : []),
+    ...(out.endsWith('.webp') ? ['-c:v', 'libwebp', '-quality', '82'] : []),
+    out,
+  ])
+}
+
+for (const s of SCENES) {
+  const src = join(ASSETS, s.source)
+  if (!existsSync(src)) throw new Error('missing source: ' + src)
+  const trim = { from: s.from, to: s.to }
+  const desk = join(OUT, `${s.id}.mp4`)
+  const mob = join(OUT, `${s.id}-m.mp4`)
+
+  if (stale(desk, src)) encode(src, desk, { width: 1080, crf: 20, gop: 8, trim })
+  if (stale(mob, src)) encode(src, mob, { width: 720, crf: 23, gop: 4, trim })
+
+  // Posters come from the encode itself so they match the video's first painted frame.
+  if (stale(join(OUT, `${s.id}.webp`), desk)) frame(desk, join(OUT, `${s.id}.webp`), { at: 0 })
+  if (stale(join(OUT, `${s.id}-m.webp`), mob)) frame(mob, join(OUT, `${s.id}-m.webp`), { at: 0 })
+
+  // Seam frames at full source resolution, for connector generation.
+  frame(desk, join(FRAMES, `${s.id}-first.png`), { at: 0 })
+  frame(desk, join(FRAMES, `${s.id}-last.png`), { last: true })
+  console.log('scene', s.id)
+}
+
+const connectors = []
+for (let i = 0; i < SCENES.length - 1; i++) {
+  const src = join(CONN_SRC, `conn-${i}.mp4`)
+  if (!existsSync(src)) { connectors.push(null); continue }
+  const desk = join(OUT, `conn-${i}.mp4`)
+  const mob = join(OUT, `conn-${i}-m.mp4`)
+  if (stale(desk, src)) encode(src, desk, { width: 1080, crf: 20, gop: 8 })
+  if (stale(mob, src)) encode(src, mob, { width: 720, crf: 23, gop: 4 })
+  connectors.push({ clip: `/media/scenes/conn-${i}.mp4`, clipMobile: `/media/scenes/conn-${i}-m.mp4` })
+  console.log('connector', i)
+}
+
+writeFileSync(join(ROOT, 'src/media.json'), JSON.stringify({ connectors }, null, 2) + '\n')
+
+// A job sheet for whoever generates the joins.
+const sheet = SCENES.slice(0, -1).map((s, i) => {
+  const next = SCENES[i + 1]
+  return [
+    `## conn-${i}: ${s.label} → ${next.label}${connectors[i] ? '  (done)' : ''}`,
+    '',
+    `- start image: \`media-src/frames/${s.id}-last.png\``,
+    `- end image:   \`media-src/frames/${next.id}-first.png\``,
+    `- save as:     \`media-src/connectors/conn-${i}.mp4\``,
+    '',
+    '> ' + CONNECTOR_PROMPTS[i],
+    '',
+  ].join('\n')
+}).join('\n')
+writeFileSync(join(CONN_SRC, 'JOBS.md'), `# Connector jobs\n\nGenerated by \`npm run media\`. See README.md in this folder.\n\n${sheet}`)
+
+console.log(`done — ${connectors.filter(Boolean).length}/${SCENES.length - 1} connectors present`)

@@ -1,0 +1,47 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "maansar",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "--prefix",
+        "site",
+        "run",
+        "dev",
+        "--",
+        "--port",
+        "5188"
+      ],
+      "port": 5188
+    },
+    {
+      "name": "maansar-v3",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "C:/Users/hetsh/Projects/MaansarStudio/v3",
+        "--",
+        "--port",
+        "5388"
+      ],
+      "port": 5388
+    },
+    {
+      "name": "maansar-v4",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "C:/Users/hetsh/Projects/MaansarStudio/v4",
+        "--",
+        "--port",
+        "5488"
+      ],
+      "port": 5488
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "maansar-v3",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev", "--prefix", "C:/Users/hetsh/Projects/MaansarStudio/v3", "--", "--port", "5388"],
+      "port": 5388
+    }
+  ]
+}

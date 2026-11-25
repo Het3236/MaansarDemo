@@ -1,0 +1,32 @@
+{
+ "loop-a77-bedroom": {
+  "src": "/media/video/loop-a77-bedroom.mp4",
+  "poster": "/media/video/loop-a77-bedroom-poster.jpg",
+  "kb": 491
+ },
+ "loop-mb-living": {
+  "src": "/media/video/loop-mb-living.mp4",
+  "poster": "/media/video/loop-mb-living-poster.jpg",
+  "kb": 399
+ },
+ "loop-mb-theatre": {
+  "src": "/media/video/loop-mb-theatre.mp4",
+  "poster": "/media/video/loop-mb-theatre-poster.jpg",
+  "kb": 374
+ },
+ "loop-m2-living": {
+  "src": "/media/video/loop-m2-living.mp4",
+  "poster": "/media/video/loop-m2-living-poster.jpg",
+  "kb": 112
+ },
+ "loop-m2-dining": {
+  "src": "/media/video/loop-m2-dining.mp4",
+  "poster": "/media/video/loop-m2-dining-poster.jpg",
+  "kb": 193
+ },
+ "loop-m2-kitchen": {
+  "src": "/media/video/loop-m2-kitchen.mp4",
+  "poster": "/media/video/loop-m2-kitchen-poster.jpg",
+  "kb": 204
+ }
+}

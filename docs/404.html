@@ -1,0 +1,358 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#FAF8F5" />
+    <title>Maansar Studios — website versions for review</title>
+    <meta
+      name="description"
+      content="Three directions for the Maansar Studios website, side by side for review."
+    />
+    <meta name="robots" content="noindex, nofollow" />
+
+    <link rel="icon" type="image/png" sizes="512x512" href="v1/media/brand/logo-mark-512.png" />
+    <link rel="apple-touch-icon" href="v1/media/brand/logo-mark-512.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Karla:wght@300;400;500&display=swap"
+    />
+
+    <style>
+      :root {
+        --terracotta: #a57764;
+        --clay: #7a5343;
+        --plaster: #f2eae3;
+        --limewash: #faf8f5;
+        --ink: #2a2320;
+        --ink-60: rgba(42, 35, 32, 0.6);
+        --ink-40: rgba(42, 35, 32, 0.4);
+        --ink-12: rgba(42, 35, 32, 0.12);
+        --gutter: 1.5rem;
+        --arch: cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @media (min-width: 48rem) {
+        :root {
+          --gutter: 2.5rem;
+        }
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        background: var(--limewash);
+        color: var(--ink);
+        font-family: Karla, system-ui, -apple-system, 'Segoe UI', sans-serif;
+        font-size: 1.0625rem;
+        line-height: 1.65;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .shell {
+        max-width: 78rem;
+        margin: 0 auto;
+        padding: 0 var(--gutter);
+      }
+
+      .label {
+        font-size: 0.6875rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--ink-60);
+        font-weight: 400;
+      }
+
+      /* ---------- masthead ---------- */
+
+      header {
+        padding: clamp(2.5rem, 7vw, 5rem) 0 clamp(2rem, 5vw, 3.5rem);
+      }
+
+      .mark {
+        width: 3rem;
+        height: auto;
+      }
+
+      h1 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 400;
+        font-size: clamp(2.125rem, 6vw, 3.75rem);
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+        margin: 1.75rem 0 0;
+        max-width: 24ch;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--clay);
+      }
+
+      .standfirst {
+        max-width: 54ch;
+        margin: 1.25rem 0 0;
+        color: var(--ink-60);
+        font-size: 1.1875rem;
+        line-height: 1.6;
+      }
+
+      .rule {
+        height: 1px;
+        background: var(--ink-12);
+        border: 0;
+        margin: clamp(2rem, 5vw, 3.25rem) 0 0;
+      }
+
+      /* ---------- versions ---------- */
+
+      .versions {
+        display: grid;
+        gap: clamp(2.5rem, 5vw, 3.5rem) 2rem;
+        grid-template-columns: 1fr;
+        padding: clamp(2.5rem, 6vw, 4rem) 0 clamp(3rem, 8vw, 6rem);
+        list-style: none;
+        margin: 0;
+      }
+
+      @media (min-width: 56rem) {
+        .versions {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .card {
+        display: flex;
+        flex-direction: column;
+        text-decoration: none;
+      }
+
+      .frame {
+        position: relative;
+        overflow: hidden;
+        background: var(--plaster);
+        aspect-ratio: 4 / 3;
+      }
+
+      .frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transform: scale(1.02);
+        transition: transform 900ms var(--arch), filter 900ms var(--arch);
+      }
+
+      .card:hover .frame img,
+      .card:focus-visible .frame img {
+        transform: scale(1.06);
+      }
+
+      .badge {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        background: var(--limewash);
+        color: var(--ink);
+        padding: 0.4rem 0.9rem;
+        font-size: 0.6875rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      .card h2 {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-weight: 400;
+        font-size: 1.625rem;
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+        margin: 1.25rem 0 0;
+      }
+
+      .card p {
+        margin: 0.625rem 0 0;
+        color: var(--ink-60);
+        max-width: 42ch;
+      }
+
+      .meta {
+        margin: 1rem 0 0;
+        color: var(--ink-40);
+        font-size: 0.8125rem;
+        letter-spacing: 0.04em;
+      }
+
+      .open {
+        margin: 1.25rem 0 0;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--clay);
+        font-size: 0.75rem;
+      }
+
+      .open span {
+        font-size: 0.75rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .open .line {
+        display: block;
+        width: 2.25rem;
+        height: 1px;
+        background: var(--clay);
+        transform-origin: left;
+        transition: transform 600ms var(--arch);
+      }
+
+      .card:hover .open .line,
+      .card:focus-visible .open .line {
+        transform: scaleX(1.45);
+      }
+
+      .card:focus-visible {
+        outline: 2px solid var(--clay);
+        outline-offset: 0.5rem;
+      }
+
+      /* ---------- footer ---------- */
+
+      footer {
+        border-top: 1px solid var(--ink-12);
+        padding: 2rem 0 3.5rem;
+        color: var(--ink-40);
+        font-size: 0.8125rem;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      footer a {
+        color: var(--clay);
+        text-decoration: none;
+        border-bottom: 1px solid var(--ink-12);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="shell">
+        <img
+          class="mark"
+          src="v1/media/brand/logo-mark-256.webp"
+          width="256"
+          height="256"
+          alt="Maansar Studios"
+        />
+        <p class="label" style="margin: 1.5rem 0 0">For review</p>
+        <h1>Three directions for the <em>Maansar Studios</em> website.</h1>
+        <p class="standfirst">
+          Same studio, same photographs, same words — three different ways of showing them. Open each
+          one and scroll it on the device you would normally use. Everything is live and clickable.
+        </p>
+        <hr class="rule" />
+      </div>
+    </header>
+
+    <main class="shell">
+      <ul class="versions">
+        <li>
+          <a class="card" href="v1/">
+            <div class="frame">
+              <img
+                src="v1/media/img/hero-living-teak-1080.webp"
+                alt="A double-height living room in teak and lime plaster"
+                loading="eager"
+              />
+              <span class="badge">Version 1</span>
+            </div>
+            <h2>The classic studio site</h2>
+            <p>
+              A calm, editorial site: home, work, project pages and an enquiry. Scroll-led, with
+              smooth motion and a full project archive.
+            </p>
+            <p class="meta">Multi-page · smooth scroll · project pages</p>
+            <span class="open"><span>Open v1</span><span class="line"></span></span>
+          </a>
+        </li>
+
+        <li>
+          <a class="card" href="v3/">
+            <div class="frame">
+              <img
+                src="v3/media/scenes/living.webp"
+                alt="A living room from the scroll-through film"
+                loading="lazy"
+              />
+              <span class="badge">Version 3</span>
+            </div>
+            <h2>One walk through a home</h2>
+            <p>
+              Scrolling moves a camera through six finished rooms — entry, living, temple, dining,
+              bedroom, theatre — and ends on the enquiry. Scroll back up and you walk backwards.
+            </p>
+            <p class="meta">Single page · video scrubbed by scroll · best on desktop</p>
+            <span class="open"><span>Open v3</span><span class="line"></span></span>
+          </a>
+        </li>
+
+        <li>
+          <a class="card" href="v4/">
+            <div class="frame">
+              <img
+                src="v4/media/img/hero-living-terracotta-1080.webp"
+                alt="A living room in terracotta and brass"
+                loading="lazy"
+              />
+              <span class="badge">Version 4</span>
+            </div>
+            <h2>Drawn, then built</h2>
+            <p>
+              The leanest of the three. One page that draws itself as you move down it — type,
+              lines and room loops, no framework behind it.
+            </p>
+            <p class="meta">Single page · lightest build · fastest to load</p>
+            <span class="open"><span>Open v4</span><span class="line"></span></span>
+          </a>
+        </li>
+      </ul>
+    </main>
+
+    <footer class="shell">
+      <p>
+        Maansar Studios — private preview. Not indexed, not final. Written up in the
+        <a href="https://github.com/Het3236/MaansarDemo">project repository</a>.
+      </p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+
+# local build output (the published build lives in docs/)
+dist/
+dist-preview/
+
+# raw footage the media scripts read from — too heavy for git,
+# the processed output is committed under each version's public/media
+media-src/
+
+# original client assets (raw photos and reels, several GB)
+Assets/
+*.pdf
+
+# v2 is not part of this preview
+v2/
+
+# os / editor
+.DS_Store
+Thumbs.db
+*.log
