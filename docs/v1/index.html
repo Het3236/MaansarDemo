@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <script data-role="restore-deep-link">
+      (function () {
+        var s = window.location.search
+        if (s.charAt(1) !== '/') return
+        var parts = s.slice(2).split('&')
+        var deep = parts.shift().replace(/~and~/g, '&')
+        var query = parts.length ? '?' + parts.join('&').replace(/~and~/g, '&') : ''
+        window.history.replaceState(null, null, window.location.pathname + deep + query + window.location.hash)
+      })()
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#FAF8F5" />
